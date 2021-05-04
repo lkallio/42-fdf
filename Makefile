@@ -1,6 +1,6 @@
 NAME = fdf
 SRC = color_op.c draw.c globs.c main.c mtx.c parsing.c \
-			data_setup.c keyev.c more_mtx.c mtx_op.c
+			data_setup.c keyev.c more_mtx.c mtx_op.c save_image.c
 SRCDIR = src/
 OBJ = $(SRC:.c=.o)
 OBJDIR = obj/
@@ -21,11 +21,11 @@ notify:
 	@printf "$(SETCYAN)Updating object files...$(UNSETCOLOR)\n"
 
 $(OBJDIR)%.o: $(SRCDIR)%.c | notify
-	@gcc $(FLAGS) -c $< -I $(INC) -I $(INCLIBFT) -o $@
+	@gcc $(FLAGS) -c $< -I $(INC) -I $(INCLIBFT) -I minilibx -o $@
 
 $(NAME): $(addprefix $(OBJDIR), $(OBJ))
 	@make -C libft
-	gcc $^ $(LIBFT) $(FLAGS) -lmlx -lX11 -lXext -o $(NAME)
+	gcc $^ $(LIBFT) $(FLAGS) -Lminilibx -lpng -lmlx -lX11 -lXext -o $(NAME)
 
 clean:
 	@make clean -C libft
